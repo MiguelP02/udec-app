@@ -64,3 +64,23 @@ dist/
 web-build/
 # Material de referencia personal (capturas y video de inspiración)
 inspiraciones/
+
+# ---- Expo (plantilla create-expo-app SDK 57) ----
+expo-env.d.ts
+# Nativo: el proyecto usa Expo Go, no genera carpetas nativas
+/ios
+/android
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+.metro-health-check*
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.pem
+.env*.local
+*.tsbuildinfo

@@ -1,3 +1,60 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Generado por scripts/build-theme-css.js desde tokens.json y dark-tokens.json. No editar a mano. */
+:root {
+  --udec-primary: 22 63 128;
+  --udec-primary-hover: 18 51 104;
+  --udec-primary-soft: 226 234 247;
+  --udec-secondary: 11 122 63;
+  --udec-secondary-soft: 223 241 230;
+  --udec-accent: 243 180 20;
+  --udec-accent-soft: 255 243 207;
+  --udec-on-accent: 19 35 58;
+  --udec-background: 255 255 255;
+  --udec-surface: 244 248 251;
+  --udec-field: 248 250 252;
+  --udec-border: 226 232 240;
+  --udec-text: 19 35 58;
+  --udec-muted: 86 101 122;
+  --udec-green: 11 122 63;
+  --udec-blue: 22 63 128;
+  --udec-yellow: 243 180 20;
+  --udec-purple: 107 79 168;
+  --udec-rust: 184 87 47;
+  --udec-red: 192 57 43;
+  --udec-code-bg: 20 33 26;
+  --udec-code-text: 219 232 223;
+  --udec-code-string: 127 211 160;
+  --udec-code-number: 143 182 255;
+  --udec-code-comment: 127 154 138;
+}
+
+.dark:root {
+  --udec-primary: 61 114 201;
+  --udec-primary-hover: 47 95 174;
+  --udec-primary-soft: 27 46 77;
+  --udec-secondary: 63 179 122;
+  --udec-secondary-soft: 19 53 36;
+  --udec-accent: 243 180 20;
+  --udec-accent-soft: 58 46 11;
+  --udec-on-accent: 19 35 58;
+  --udec-background: 19 28 44;
+  --udec-surface: 11 18 32;
+  --udec-field: 27 38 56;
+  --udec-border: 43 58 82;
+  --udec-text: 231 237 247;
+  --udec-muted: 163 177 198;
+  --udec-green: 63 179 122;
+  --udec-blue: 61 114 201;
+  --udec-yellow: 243 180 20;
+  --udec-purple: 155 132 224;
+  --udec-rust: 224 138 95;
+  --udec-red: 240 113 103;
+  --udec-code-bg: 10 15 24;
+  --udec-code-text: 219 232 223;
+  --udec-code-string: 127 211 160;
+  --udec-code-number: 143 182 255;
+  --udec-code-comment: 127 154 138;
+}

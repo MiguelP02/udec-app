@@ -1,4 +1,7 @@
-import { cssVarsFor, darkPalette, lightPalette } from './palettes';
+import { darkPalette, lightPalette, toRgbTriplet } from './palettes';
+
+// src/global.css se genera con scripts/build-theme-css.js a partir de estas paletas.
+// Tras cambiar un color, ejecutar: node scripts/build-theme-css.js
 
 describe('paletas del tema', () => {
   it('la paleta oscura define exactamente los mismos colores que la clara', () => {
@@ -10,10 +13,7 @@ describe('paletas del tema', () => {
     expect(darkPalette.text).not.toBe(lightPalette.text);
   });
 
-  it('genera una variable --udec-* por cada color', () => {
-    const vars = cssVarsFor(darkPalette);
-    expect(vars['--udec-background']).toBe(darkPalette.background);
-    expect(Object.keys(vars)).toHaveLength(Object.keys(darkPalette).length);
-    expect(Object.keys(vars).every((name) => name.startsWith('--udec-'))).toBe(true);
+  it('convierte #RRGGBB al formato "r g b" de Tailwind', () => {
+    expect(toRgbTriplet('#163F80')).toBe('22 63 128');
   });
 });

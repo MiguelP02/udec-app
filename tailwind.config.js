@@ -1,8 +1,11 @@
 const tokens = require('./src/theme/tokens.json');
 
-// Los colores udec-* leen variables CSS (--udec-*) que el ThemeProvider define según el tema
-// (claro u oscuro). Así las clases cambian de color sin recompilar. Ver src/theme/palettes.ts.
-const udec = Object.fromEntries(Object.keys(tokens.colors).map((name) => [name, `var(--udec-${name})`]));
+// Los colores udec-* leen variables CSS (--udec-*, en formato "r g b") definidas en src/global.css:
+// :root para el tema claro y .dark:root para el oscuro. NativeWind activa .dark:root con colorScheme.
+// <alpha-value> permite modificadores de opacidad. Ver scripts/build-theme-css.js.
+const udec = Object.fromEntries(
+  Object.keys(tokens.colors).map((name) => [name, `rgb(var(--udec-${name}) / <alpha-value>)`]),
+);
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {

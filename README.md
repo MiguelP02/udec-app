@@ -76,6 +76,5 @@ scripts/        Utilidades de desarrollo
 ## Autores
 
 - Miguel Antonio Páez Leonel
-- Gustavo Adolfo Domínguez Páez
 
-Ingeniería de Software, Grupo 104, Universidad de Cundinamarca.
+Ingeniería de Software, Universidad de Cundinamarca.

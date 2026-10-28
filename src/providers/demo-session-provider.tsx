@@ -2,7 +2,7 @@ import { createContext, useContext, useMemo, useState, type ReactNode } from 're
 
 export type SessionStatus = 'signed-out' | 'unverified' | 'signed-in';
 
-export const DEMO_EMAIL = 'test@gmail.com';
+export const DEMO_EMAIL = 'mantoniopaez@ucundinamarca.edu.co';
 export const DEMO_PASSWORD = 'test123';
 
 type SessionValue = {

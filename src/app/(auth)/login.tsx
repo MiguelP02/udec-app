@@ -5,18 +5,20 @@ import { useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GoogleMark } from '../../components/google-mark';
 import { Text } from '../../components/ui/text';
-import { useSession } from '../../providers/demo-session-provider';
+import { DEMO_EMAIL, useSession } from '../../providers/demo-session-provider';
+import { isInstitutionalEmail } from '../../utils/email';
 import { colors, fonts } from '../../theme';
 
 type Field = 'email' | 'password';
 
 const DOMAIN_ERROR = 'Usa tu correo institucional @ucundinamarca.edu.co. Los correos personales no tienen acceso.';
+const CREDENTIALS_ERROR = 'Correo o contraseña incorrectos.';
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { signIn } = useSession();
-  const [email, setEmail] = useState('test@gmail.com');
+  const [email, setEmail] = useState(DEMO_EMAIL);
   const [password, setPassword] = useState('test123');
   const [showPassword, setShowPassword] = useState(false);
   const [focused, setFocused] = useState<Field | null>(null);
@@ -24,8 +26,12 @@ export default function LoginScreen() {
   const canSubmit = email.trim().length > 0 && password.length > 0;
 
   const submit = () => {
+    if (!isInstitutionalEmail(email)) {
+      setError(DOMAIN_ERROR);
+      return;
+    }
     const ok = signIn(email, password);
-    setError(ok ? null : DOMAIN_ERROR);
+    setError(ok ? null : CREDENTIALS_ERROR);
   };
 
   return (

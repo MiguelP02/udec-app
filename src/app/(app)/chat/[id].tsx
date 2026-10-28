@@ -404,7 +404,7 @@ export default function ChatDetailScreen() {
   return (
     <View className="flex-1 bg-udec-surface">
       <KeyboardAvoidingView
-        className="w-full max-w-md flex-1 self-center bg-udec-background"
+        className="flex-1 w-full bg-udec-background"
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={0}
       >

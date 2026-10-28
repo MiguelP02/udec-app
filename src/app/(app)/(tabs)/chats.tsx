@@ -212,7 +212,7 @@ export default function ChatsScreen() {
 
   return (
     <View className="flex-1 bg-udec-surface">
-      <View className="w-full max-w-md flex-1 self-center bg-udec-background">
+      <View className="flex-1 w-full bg-udec-background">
         <View className="overflow-hidden bg-udec-primary" style={{ paddingTop: insets.top }}>
           <View
             pointerEvents="none"

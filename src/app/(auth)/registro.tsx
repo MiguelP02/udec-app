@@ -101,7 +101,7 @@ export default function RegisterScreen() {
       className="flex-1 bg-udec-surface"
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <View className="flex-1 w-full max-w-md self-center bg-udec-background">
+      <View className="flex-1 w-full bg-udec-background">
         <View className="bg-udec-primary overflow-hidden" style={{ paddingTop: insets.top }}>
           <View className="h-14 flex-row items-center justify-between px-4">
             <Pressable

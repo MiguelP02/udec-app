@@ -226,7 +226,7 @@ export default function ForumScreen() {
 
   return (
     <View className="flex-1 bg-udec-surface">
-      <View className="w-full max-w-md flex-1 self-center bg-udec-surface">
+      <View className="flex-1 w-full bg-udec-surface">
         <View className="overflow-hidden bg-udec-primary" style={{ paddingTop: insets.top }}>
           <View pointerEvents="none" className="absolute -right-16 -top-16 h-56 w-56 rounded-full border border-white/10" />
           <View pointerEvents="none" className="absolute -right-8 -top-8 h-40 w-40 rounded-full border border-white/10" />

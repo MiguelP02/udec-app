@@ -143,7 +143,7 @@ export default function QuestionDetailScreen() {
   if (!question) {
     return (
       <KeyboardAvoidingView className="flex-1 bg-udec-background" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <View className="w-full max-w-md flex-1 self-center bg-udec-background">
+        <View className="flex-1 w-full bg-udec-background">
           <View className="bg-udec-primary" style={{ paddingTop: insets.top }}>
             <View className="h-14 flex-row items-center gap-3 px-4">
               <Pressable
@@ -334,7 +334,7 @@ export default function QuestionDetailScreen() {
       className="flex-1 bg-udec-background"
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <View className="w-full max-w-md flex-1 self-center bg-udec-background">
+      <View className="flex-1 w-full bg-udec-background">
         <View className="bg-udec-primary" style={{ paddingTop: insets.top }}>
           <View className="h-14 flex-row items-center gap-3 px-4">
             <Pressable

@@ -76,7 +76,7 @@ export default function VerifyEmailScreen({ illustration }: VerifyEmailScreenPro
   const resendLabel = secondsLeft > 0 ? `Reenviar correo (${secondsLeft} s)` : 'Reenviar correo';
 
   return (
-    <View className="flex-1 w-full max-w-md self-center bg-udec-background">
+    <View className="flex-1 w-full bg-udec-background">
       <View
         className="bg-udec-primary overflow-hidden"
         style={{ paddingTop: insets.top }}

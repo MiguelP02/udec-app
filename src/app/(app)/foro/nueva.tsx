@@ -57,7 +57,7 @@ export default function NewQuestionScreen() {
   return (
     <View className="flex-1 bg-udec-surface">
       <Stack.Screen options={{ headerShown: false }} />
-      <View className="flex-1 w-full max-w-md self-center bg-udec-background">
+      <View className="flex-1 w-full bg-udec-background">
         <View className="bg-udec-primary" style={{ paddingTop: insets.top }}>
           <View className="h-14 flex-row items-center gap-1 px-4">
             <Pressable

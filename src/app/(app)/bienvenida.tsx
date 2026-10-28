@@ -89,7 +89,7 @@ function WelcomeGuide({ onFinish, illustrations }: WelcomeGuideProps) {
 
   return (
     <View className="flex-1 bg-udec-surface">
-      <View className="flex-1 w-full max-w-md self-center bg-udec-surface">
+      <View className="flex-1 w-full bg-udec-surface">
         <View className="overflow-hidden bg-udec-primary" style={{ paddingTop: insets.top }}>
           <View pointerEvents="none" className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-white/10" />
           <View pointerEvents="none" className="absolute -bottom-10 -left-10 h-36 w-36 rounded-full bg-udec-accent/15" />

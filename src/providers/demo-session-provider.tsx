@@ -4,6 +4,7 @@ export type SessionStatus = 'signed-out' | 'unverified' | 'signed-in';
 
 export const DEMO_EMAIL = 'mantoniopaez@ucundinamarca.edu.co';
 export const DEMO_PASSWORD = 'test123';
+const MIN_PASSWORD_LENGTH = 6;
 
 type SessionValue = {
   status: SessionStatus;
@@ -12,6 +13,8 @@ type SessionValue = {
   signUp: (email: string) => void;
   markVerified: () => void;
   signOut: () => void;
+  /** Devuelve false si la contraseña actual no coincide o la nueva es demasiado corta. */
+  changePassword: (current: string, next: string) => boolean;
 };
 
 const SessionContext = createContext<SessionValue | null>(null);
@@ -19,6 +22,8 @@ const SessionContext = createContext<SessionValue | null>(null);
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<SessionStatus>('signed-out');
   const [email, setEmail] = useState<string | null>(null);
+  // Demo: la contraseña vive en memoria; se pierde al cerrar la app.
+  const [password, setPassword] = useState(DEMO_PASSWORD);
 
   const value = useMemo<SessionValue>(
     () => ({
@@ -26,7 +31,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       email,
       signIn: (candidateEmail, candidatePassword) => {
         const isDemo =
-          candidateEmail.trim().toLowerCase() === DEMO_EMAIL && candidatePassword === DEMO_PASSWORD;
+          candidateEmail.trim().toLowerCase() === DEMO_EMAIL && candidatePassword === password;
         if (!isDemo) return false;
         setEmail(DEMO_EMAIL);
         setStatus('signed-in');
@@ -41,8 +46,14 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         setEmail(null);
         setStatus('signed-out');
       },
+      changePassword: (current, next) => {
+        if (current !== password) return false;
+        if (next.length < MIN_PASSWORD_LENGTH) return false;
+        setPassword(next);
+        return true;
+      },
     }),
-    [status, email],
+    [status, email, password],
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;

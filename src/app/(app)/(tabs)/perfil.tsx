@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Modal, Pressable, ScrollView, View } from 'react-native';
+import { Modal, Pressable, ScrollView, TextInput, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { colorScheme } from 'nativewind';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/ui/text';
 import { useSession } from '@/providers/demo-session-provider';
-import { colors } from '@/theme';
+import { colors, fonts } from '@/theme';
 
 type UserRole = 'estudiante' | 'docente' | 'oficial';
 
@@ -19,19 +20,27 @@ type ProfileUser = {
 type ProfileStats = { posts: number; questions: number; answers: number };
 
 type ProfileOption = {
-  id: 'notifications' | 'privacy' | 'campus';
+  id: 'notifications' | 'privacy' | 'campus' | 'password' | 'theme';
   icon: keyof typeof MaterialIcons.glyphMap;
   title: string;
   value: string;
   toastMessage: string;
 };
 
+type ThemeChoice = 'claro' | 'oscuro' | 'sistema';
+
+const THEME_OPTIONS: { key: ThemeChoice; label: string; scheme: 'light' | 'dark' | 'system' }[] = [
+  { key: 'claro', label: 'Claro', scheme: 'light' },
+  { key: 'oscuro', label: 'Oscuro', scheme: 'dark' },
+  { key: 'sistema', label: 'Según el sistema', scheme: 'system' },
+];
+
 /** MOCK: en la Fase 4 saldrá del usuario autenticado de Firebase Auth (users/{uid}). */
 const MOCK_USER: ProfileUser = {
   name: 'Miguel Páez',
   initials: 'MP',
-  email: 'miguel.paez@ucundinamarca.edu.co',
-  program: 'Ingeniería de Software · Grupo 104',
+  email: 'mantoniopaez@ucundinamarca.edu.co',
+  program: 'Ingeniería de Software',
   role: 'estudiante',
 };
 
@@ -58,8 +67,22 @@ const OPTIONS: ProfileOption[] = [
     id: 'campus',
     icon: 'location-on',
     title: 'Sede',
-    value: 'Fusagasugá',
-    toastMessage: 'Sede Fusagasugá · Facultad de Ingeniería',
+    value: 'Girardot',
+    toastMessage: 'Sede Girardot · Facultad de Ingeniería',
+  },
+  {
+    id: 'password',
+    icon: 'lock-outline',
+    title: 'Cambiar contraseña',
+    value: 'Actualiza tu contraseña',
+    toastMessage: '',
+  },
+  {
+    id: 'theme',
+    icon: 'dark-mode',
+    title: 'Tema',
+    value: 'Claro',
+    toastMessage: '',
   },
 ];
 
@@ -77,18 +100,70 @@ function roleLabel(role: UserRole): string {
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
-  const { signOut } = useSession();
+  const { signOut, changePassword } = useSession();
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [passwordOpen, setPasswordOpen] = useState(false);
+  const [themeOpen, setThemeOpen] = useState(false);
+  const [theme, setTheme] = useState<ThemeChoice>('claro');
+  const [notice, setNotice] = useState<string | null>(null);
+
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+
   const user = MOCK_USER;
   const stats = MOCK_STATS;
+  const themeLabel = THEME_OPTIONS.find((item) => item.key === theme)?.label ?? 'Claro';
+  const options = OPTIONS.map((option) => (option.id === 'theme' ? { ...option, value: themeLabel } : option));
 
-  const handleOpenSettings = () => {
-    // TODO: pantalla de ajustes (el plan aún no la define)
+  const resetPasswordForm = () => {
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+    setPasswordError(null);
+  };
+
+  const closePasswordModal = () => {
+    resetPasswordForm();
+    setPasswordOpen(false);
   };
 
   const handleOptionPress = (option: ProfileOption) => {
+    if (option.id === 'password') {
+      setNotice(null);
+      setPasswordOpen(true);
+      return;
+    }
+    if (option.id === 'theme') {
+      setThemeOpen(true);
+      return;
+    }
     // TODO(fase-8): useToast().show(option.toastMessage)
     void option;
+  };
+
+  const handleSubmitPassword = () => {
+    if (newPassword !== confirmPassword) {
+      setPasswordError('Las contraseñas nuevas no coinciden.');
+      return;
+    }
+    if (!changePassword(currentPassword, newPassword)) {
+      setPasswordError(
+        newPassword.length < 6
+          ? 'La nueva contraseña debe tener al menos 6 caracteres.'
+          : 'La contraseña actual no es correcta.',
+      );
+      return;
+    }
+    closePasswordModal();
+    setNotice('Contraseña actualizada.');
+  };
+
+  const handleSelectTheme = (choice: (typeof THEME_OPTIONS)[number]) => {
+    setTheme(choice.key);
+    colorScheme.set(choice.scheme);
+    setThemeOpen(false);
   };
 
   const handleConfirmSignOut = () => {
@@ -99,14 +174,14 @@ export default function ProfileScreen() {
 
   return (
     <View className="flex-1 bg-udec-surface">
-      <View className="w-full max-w-md flex-1 self-center bg-udec-surface">
+      <View className="flex-1 w-full bg-udec-surface">
         <View className="overflow-hidden bg-udec-primary" style={{ paddingTop: insets.top }}>
           <View pointerEvents="none" className="absolute -right-16 -top-16 h-56 w-56 rounded-full border border-white/10" />
           <View pointerEvents="none" className="absolute -right-8 -top-8 h-40 w-40 rounded-full border border-white/10" />
           <View pointerEvents="none" className="absolute -bottom-12 -left-12 h-44 w-44 rounded-full border border-white/10" />
 
-          <View className="h-16 flex-row items-center justify-between pl-4 pr-2">
-            <View className="flex-1 pr-2">
+          <View className="h-16 flex-row items-center pl-4 pr-4">
+            <View className="flex-1">
               <Text weight="extrabold" accessibilityRole="header" className="text-lg leading-6 text-white">
                 Mi perfil
               </Text>
@@ -114,14 +189,6 @@ export default function ProfileScreen() {
                 Cuenta institucional
               </Text>
             </View>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Ajustes"
-              onPress={handleOpenSettings}
-              className="h-11 w-11 items-center justify-center rounded-pill active:bg-white/10"
-            >
-              <MaterialIcons name="settings" size={24} color="#FFFFFF" />
-            </Pressable>
           </View>
         </View>
 
@@ -182,7 +249,7 @@ export default function ProfileScreen() {
           </View>
 
           <View className="overflow-hidden rounded-card border border-udec-border bg-udec-background">
-            {OPTIONS.map((option, index) => (
+            {options.map((option, index) => (
               <Pressable
                 key={option.id}
                 accessibilityRole="button"
@@ -207,6 +274,12 @@ export default function ProfileScreen() {
               </Pressable>
             ))}
           </View>
+
+          {notice ? (
+            <Text accessibilityLiveRegion="polite" weight="semibold" className="text-center text-sm text-udec-secondary">
+              {notice}
+            </Text>
+          ) : null}
 
           <Pressable
             accessibilityRole="button"
@@ -262,6 +335,133 @@ export default function ProfileScreen() {
                   </Text>
                 </Pressable>
               </View>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          visible={passwordOpen}
+          transparent
+          animationType="fade"
+          statusBarTranslucent
+          onRequestClose={closePasswordModal}
+        >
+          <View className="flex-1 items-center justify-center bg-udec-text/50 px-6">
+            <Pressable accessible={false} className="absolute inset-0" onPress={closePasswordModal} />
+            <View accessibilityViewIsModal className="w-full max-w-sm gap-4 rounded-card bg-udec-background p-5">
+              <Text weight="bold" accessibilityRole="header" className="text-lg text-udec-text">
+                Cambiar contraseña
+              </Text>
+
+              <View className="gap-1.5">
+                <Text weight="bold" className="text-[13px] text-udec-text">
+                  Contraseña actual
+                </Text>
+                <TextInput
+                  accessibilityLabel="Contraseña actual"
+                  value={currentPassword}
+                  onChangeText={setCurrentPassword}
+                  secureTextEntry
+                  autoCapitalize="none"
+                  className="min-h-[44px] rounded-control border border-udec-border bg-udec-field px-3.5 py-3 text-sm text-udec-text"
+                  style={{ fontFamily: fonts.medium }}
+                />
+              </View>
+
+              <View className="gap-1.5">
+                <Text weight="bold" className="text-[13px] text-udec-text">
+                  Contraseña nueva
+                </Text>
+                <TextInput
+                  accessibilityLabel="Contraseña nueva"
+                  value={newPassword}
+                  onChangeText={setNewPassword}
+                  secureTextEntry
+                  autoCapitalize="none"
+                  className="min-h-[44px] rounded-control border border-udec-border bg-udec-field px-3.5 py-3 text-sm text-udec-text"
+                  style={{ fontFamily: fonts.medium }}
+                />
+              </View>
+
+              <View className="gap-1.5">
+                <Text weight="bold" className="text-[13px] text-udec-text">
+                  Repite la contraseña nueva
+                </Text>
+                <TextInput
+                  accessibilityLabel="Repite la contraseña nueva"
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  secureTextEntry
+                  autoCapitalize="none"
+                  className="min-h-[44px] rounded-control border border-udec-border bg-udec-field px-3.5 py-3 text-sm text-udec-text"
+                  style={{ fontFamily: fonts.medium }}
+                />
+              </View>
+
+              {passwordError ? (
+                <Text accessibilityRole="alert" className="text-[13px] leading-5 text-udec-red">
+                  {passwordError}
+                </Text>
+              ) : null}
+
+              <View className="flex-row gap-3">
+                <Pressable
+                  accessibilityRole="button"
+                  onPress={closePasswordModal}
+                  className="h-12 flex-1 items-center justify-center rounded-control border border-udec-border bg-udec-background active:bg-udec-surface"
+                >
+                  <Text weight="semibold" className="text-sm text-udec-text">
+                    Cancelar
+                  </Text>
+                </Pressable>
+                <Pressable
+                  accessibilityRole="button"
+                  onPress={handleSubmitPassword}
+                  className="h-12 flex-1 items-center justify-center rounded-control bg-udec-primary active:bg-udec-primary-hover"
+                >
+                  <Text weight="semibold" className="text-sm text-white">
+                    Guardar
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          visible={themeOpen}
+          transparent
+          animationType="fade"
+          statusBarTranslucent
+          onRequestClose={() => setThemeOpen(false)}
+        >
+          <View className="flex-1 items-center justify-center bg-udec-text/50 px-6">
+            <Pressable accessible={false} className="absolute inset-0" onPress={() => setThemeOpen(false)} />
+            <View accessibilityViewIsModal className="w-full max-w-sm gap-2 rounded-card bg-udec-background p-5">
+              <Text weight="bold" accessibilityRole="header" className="mb-2 text-lg text-udec-text">
+                Tema
+              </Text>
+              {THEME_OPTIONS.map((choice) => {
+                const selected = choice.key === theme;
+                return (
+                  <Pressable
+                    key={choice.key}
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: selected }}
+                    onPress={() => handleSelectTheme(choice)}
+                    className="min-h-[48px] flex-row items-center gap-3 rounded-control px-2 active:bg-udec-surface"
+                  >
+                    <MaterialIcons
+                      name={selected ? 'radio-button-checked' : 'radio-button-unchecked'}
+                      size={22}
+                      color={selected ? colors.primary : colors.muted}
+                    />
+                    <Text weight={selected ? 'bold' : 'medium'} className="text-sm text-udec-text">
+                      {choice.label}
+                    </Text>
+                  </Pressable>
+                );
+              })}
             </View>
           </View>
         </Modal>

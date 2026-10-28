@@ -14,6 +14,7 @@ import { useFocusEffect, useLocalSearchParams, useRouter, type Href } from 'expo
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ChatFilesTab, type ChatFilesStatus } from '../../../components/chat-files-tab';
 import { SegmentedControl } from '../../../components/segmented-control';
+import { StateView } from '../../../components/state-view';
 import { Text } from '../../../components/ui/text';
 import { CHANNEL_INFO, MOCK_FILES, MOCK_MESSAGES } from '../../../data/mock-chats';
 import { colors, fonts } from '../../../theme';
@@ -425,18 +426,28 @@ export default function ChatDetailScreen() {
               {info.pinned ? (
                 <PinnedNotice pinned={info.pinned} expanded={pinnedExpanded} onToggle={togglePinned} />
               ) : null}
-              <FlatList
-                inverted
-                data={items}
-                keyExtractor={(item) => item.key}
-                renderItem={renderItem}
-                className="flex-1 bg-udec-surface"
-                contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 12 }}
-                keyboardShouldPersistTaps="handled"
-                keyboardDismissMode="interactive"
-                initialNumToRender={12}
-                windowSize={9}
-              />
+              {items.length === 0 ? (
+                <View className="flex-1 bg-udec-surface">
+                  <StateView
+                    variant="empty"
+                    title="Todavía no hay mensajes"
+                    message="Cuando alguien escriba, la conversación aparecerá aquí."
+                  />
+                </View>
+              ) : (
+                <FlatList
+                  inverted
+                  data={items}
+                  keyExtractor={(item) => item.key}
+                  renderItem={renderItem}
+                  className="flex-1 bg-udec-surface"
+                  contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 12 }}
+                  keyboardShouldPersistTaps="handled"
+                  keyboardDismissMode="interactive"
+                  initialNumToRender={12}
+                  windowSize={9}
+                />
+              )}
               {canWrite ? (
                 <Composer
                   draft={draft}

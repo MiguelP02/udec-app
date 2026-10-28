@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Keyboard, Pressable, TextInput, View } from 'react-native';
 import { Text } from '@/components/ui/text';
-import { colors, fonts } from '@/theme';
+import { fonts } from '@/theme';
+import { useThemeColors } from '@/theme/theme-context';
 import { POST_TAGS, type PostTag } from '@/types/community';
 
 export type PostComposerProps = {
@@ -12,6 +13,7 @@ export type PostComposerProps = {
 const DEFAULT_TAG: PostTag = '#Eventos';
 
 export function PostComposer({ firstName, onPublish }: PostComposerProps) {
+  const colors = useThemeColors();
   const [text, setText] = useState('');
   const [tag, setTag] = useState<PostTag>(DEFAULT_TAG);
   const [focused, setFocused] = useState(false);

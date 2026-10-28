@@ -5,7 +5,8 @@ import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '../../components/ui/text';
 import { useSession } from '../../providers/demo-session-provider';
-import { colors, fonts } from '../../theme';
+import { fonts } from '../../theme';
+import { useThemeColors } from '@/theme/theme-context';
 
 type Field = 'fullName' | 'email' | 'password';
 type BoxState = 'default' | 'focus' | 'error';
@@ -42,6 +43,7 @@ async function submitRegistration(_data: RegisterFormData): Promise<void> {
 }
 
 export default function RegisterScreen() {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { signUp } = useSession();

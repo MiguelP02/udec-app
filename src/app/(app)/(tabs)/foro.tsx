@@ -4,7 +4,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/ui/text';
-import { colors, fonts } from '@/theme';
+import { fonts } from '@/theme';
+import { useThemeColors } from '@/theme/theme-context';
 import { mockQuestions, type Question } from '@/data/mock-forum';
 import { formatRelative } from '@/utils/time';
 
@@ -36,6 +37,7 @@ type QuestionRowProps = {
 };
 
 const QuestionRow = memo(function QuestionRow({ item, voted, onToggleVote, onOpen }: QuestionRowProps) {
+  const colors = useThemeColors();
   const count = item.voteCount + (voted ? 1 : 0);
   const solved = item.solvedAnswerId !== null;
   const answerLabel =
@@ -113,6 +115,7 @@ const QuestionRow = memo(function QuestionRow({ item, voted, onToggleVote, onOpe
 });
 
 export default function ForumScreen() {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [query, setQuery] = useState('');

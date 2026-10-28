@@ -5,7 +5,8 @@ import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CodeBlock, MONO_FONT } from '@/components/code-block';
 import { Text } from '@/components/ui/text';
-import { colors, fonts } from '@/theme';
+import { fonts } from '@/theme';
+import { useThemeColors } from '@/theme/theme-context';
 import {
   MOCK_CURRENT_USER_ID,
   mockAnswersByQuestion,
@@ -37,6 +38,7 @@ const AnswerCard = memo(function AnswerCard({
   onToggleVote,
   onMarkSolution,
 }: AnswerCardProps) {
+  const colors = useThemeColors();
   return (
     <View className={`gap-2 rounded-card p-4 ${isSolution ? 'bg-udec-secondary-soft' : 'bg-udec-surface'}`}>
       <View className="flex-row items-center justify-between gap-2">
@@ -102,6 +104,7 @@ const AnswerCard = memo(function AnswerCard({
 });
 
 export default function QuestionDetailScreen() {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();

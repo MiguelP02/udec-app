@@ -5,7 +5,8 @@ import { useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '../../../components/ui/text';
 import { MOCK_CHANNELS } from '../../../data/mock-chats';
-import { colors, fonts } from '../../../theme';
+import { fonts } from '../../../theme';
+import { useThemeColors } from '@/theme/theme-context';
 import type { ChannelItem, ChannelKind } from '../../../types/chat';
 import { formatListTime } from '../../../utils/time';
 
@@ -78,6 +79,7 @@ type ChannelRowProps = {
 };
 
 const ChannelRow = memo(function ChannelRow({ item, onPress }: ChannelRowProps) {
+  const colors = useThemeColors();
   const time = formatListTime(item.lastMessageAt, new Date());
   const author = item.lastMessage && item.lastMessage.authorName ? firstName(item.lastMessage.authorName) : '';
   const text = item.lastMessage ? item.lastMessage.text : '';
@@ -144,6 +146,7 @@ function RowDivider() {
 }
 
 function EmptyList() {
+  const colors = useThemeColors();
   return (
     <View className="items-center gap-3 px-8 py-12">
       <MaterialIcons name="search-off" size={40} color={colors.muted} />
@@ -176,6 +179,7 @@ function markChannelRead(channelId: string): void {
 }
 
 export default function ChatsScreen() {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [query, setQuery] = useState('');

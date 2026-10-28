@@ -1,8 +1,10 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { colors, fonts } from '../../../theme';
+import { fonts } from '../../../theme';
+import { useThemeColors } from '@/theme/theme-context';
 
 export default function TabsLayout() {
+  const colors = useThemeColors();
   return (
     <Tabs
       screenOptions={{

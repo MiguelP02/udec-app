@@ -11,7 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '../../components/ui/text';
-import { colors } from '../../theme';
+import { useThemeColors } from '@/theme/theme-context';
 
 type StepId = 'chats' | 'community' | 'forum';
 
@@ -60,6 +60,7 @@ export default function WelcomeScreen() {
 }
 
 function WelcomeGuide({ onFinish, illustrations }: WelcomeGuideProps) {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const frameHeight = height < 700 ? 120 : 160;
@@ -92,7 +93,7 @@ function WelcomeGuide({ onFinish, illustrations }: WelcomeGuideProps) {
       <View className="flex-1 w-full bg-udec-surface">
         <View className="overflow-hidden bg-udec-primary" style={{ paddingTop: insets.top }}>
           <View pointerEvents="none" className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-white/10" />
-          <View pointerEvents="none" className="absolute -bottom-10 -left-10 h-36 w-36 rounded-full bg-udec-accent/15" />
+          <View pointerEvents="none" className="absolute -bottom-10 -left-10 h-36 w-36 rounded-full bg-udec-accent-soft" />
           <View pointerEvents="none" className="absolute -top-8 left-1/3 h-24 w-24 rounded-full border border-white/10" />
 
           <View className="items-center px-6 pb-8 pt-4">

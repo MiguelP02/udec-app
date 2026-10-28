@@ -2,7 +2,8 @@ import { memo, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Text } from '@/components/ui/text';
-import { colors, fonts, type DataColor } from '@/theme';
+import { fonts, type DataColor } from '@/theme';
+import { useThemeColors } from '@/theme/theme-context';
 import type { EventBannerData, PostView } from '@/types/community';
 import { formatRelative } from '@/utils/time';
 import { initialsFor } from '@/utils/initials';
@@ -50,6 +51,7 @@ function EventBanner({ banner }: { banner: EventBannerData }) {
 }
 
 function PostCardBase({ post, onToggleLike, onAddComment }: PostCardProps) {
+  const colors = useThemeColors();
   const [expanded, setExpanded] = useState(post.comments.length > 0);
   const [commentText, setCommentText] = useState('');
   const [commentFocused, setCommentFocused] = useState(false);

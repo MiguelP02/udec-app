@@ -17,7 +17,8 @@ import { SegmentedControl } from '../../../components/segmented-control';
 import { StateView } from '../../../components/state-view';
 import { Text } from '../../../components/ui/text';
 import { CHANNEL_INFO, MOCK_FILES, MOCK_MESSAGES } from '../../../data/mock-chats';
-import { colors, fonts } from '../../../theme';
+import { fonts } from '../../../theme';
+import { useThemeColors } from '@/theme/theme-context';
 import type { AuthorRole, ChannelInfo, ChatFile, Message } from '../../../types/chat';
 import { initialsFor } from '../../../utils/initials';
 import { withDaySeparators, type ChatItem } from '../../../utils/day-separators';
@@ -59,6 +60,7 @@ type ChatHeaderProps = {
 };
 
 function ChatHeader({ info, onBack }: ChatHeaderProps) {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   return (
     <View className="bg-udec-primary" style={{ paddingTop: insets.top }}>
@@ -100,6 +102,7 @@ type PinnedNoticeProps = {
 };
 
 function PinnedNotice({ pinned, expanded, onToggle }: PinnedNoticeProps) {
+  const colors = useThemeColors();
   return (
     <View className="bg-udec-accent-soft pl-4">
       <Pressable
@@ -161,6 +164,7 @@ type AttachedFileProps = {
 };
 
 function AttachedFile({ file, onDownload }: AttachedFileProps) {
+  const colors = useThemeColors();
   return (
     <View className="mt-2 flex-row items-center gap-2 border-t border-udec-border pt-2">
       <MaterialIcons name={FILE_ICON[file.type] ?? 'insert-drive-file'} size={28} color={colors[file.color]} />
@@ -243,6 +247,7 @@ type ComposerProps = {
 };
 
 function Composer({ draft, onChangeDraft, onSend, onAttach }: ComposerProps) {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   const inputRef = useRef<TextInputInstance>(null);
   const [focused, setFocused] = useState(false);

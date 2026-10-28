@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '../components/ui/text';
 import { useSession } from '../providers/demo-session-provider';
-import { colors } from '../theme';
+import { useThemeColors } from '@/theme/theme-context';
 
 const COOLDOWN_SECONDS = 30;
 
@@ -24,6 +24,7 @@ async function resendVerificationEmail(): Promise<void> {
 }
 
 export default function VerifyEmailScreen({ illustration }: VerifyEmailScreenProps) {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   const { email: sessionEmail, markVerified, signOut } = useSession();
   const [secondsLeft, setSecondsLeft] = useState(COOLDOWN_SECONDS);

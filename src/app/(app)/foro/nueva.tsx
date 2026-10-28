@@ -4,7 +4,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/ui/text';
-import { colors, fonts, monoFont } from '@/theme';
+import { fonts, monoFont } from '@/theme';
+import { useThemeColors } from '@/theme/theme-context';
 
 const HEADER_HEIGHT = 56;
 const LANGUAGES = ['dart', 'java', 'python', 'sql', 'javascript'] as const;
@@ -20,6 +21,7 @@ async function createQuestionStub(input: NewQuestionInput): Promise<string> {
 }
 
 export default function NewQuestionScreen() {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const bodyRef = useRef<ComponentRef<typeof TextInput>>(null);

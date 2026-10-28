@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { ActivityIndicator, Pressable, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { colors } from '../theme';
+import { useThemeColors } from '@/theme/theme-context';
 import { Text } from './ui/text';
 import { SkeletonRow, useReducedMotion } from './skeleton-row';
 
@@ -25,6 +25,7 @@ export type StateViewProps = {
 };
 
 export function StateView({ variant, title, message, actionLabel, onAction, illustration, rows = 3 }: StateViewProps) {
+  const colors = useThemeColors();
   const reducedMotion = useReducedMotion();
 
   if (variant === 'loading') {

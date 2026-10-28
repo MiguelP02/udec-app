@@ -7,7 +7,8 @@ import { GoogleMark } from '../../components/google-mark';
 import { Text } from '../../components/ui/text';
 import { DEMO_EMAIL, useSession } from '../../providers/demo-session-provider';
 import { isInstitutionalEmail } from '../../utils/email';
-import { colors, fonts } from '../../theme';
+import { fonts } from '../../theme';
+import { useThemeColors } from '@/theme/theme-context';
 
 type Field = 'email' | 'password';
 
@@ -15,6 +16,7 @@ const DOMAIN_ERROR = 'Usa tu correo institucional @ucundinamarca.edu.co. Los cor
 const CREDENTIALS_ERROR = 'Correo o contraseña incorrectos.';
 
 export default function LoginScreen() {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { signIn } = useSession();

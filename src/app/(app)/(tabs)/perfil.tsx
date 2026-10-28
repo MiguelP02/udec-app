@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Modal, Pressable, ScrollView, TextInput, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { colorScheme } from 'nativewind';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/ui/text';
 import { useSession } from '@/providers/demo-session-provider';
-import { colors, fonts } from '@/theme';
+import { fonts } from '@/theme';
+import { useTheme, useThemeColors, type ThemeChoice } from '@/theme/theme-context';
 
 type UserRole = 'estudiante' | 'docente' | 'oficial';
 
@@ -27,12 +27,10 @@ type ProfileOption = {
   toastMessage: string;
 };
 
-type ThemeChoice = 'claro' | 'oscuro' | 'sistema';
-
-const THEME_OPTIONS: { key: ThemeChoice; label: string; scheme: 'light' | 'dark' | 'system' }[] = [
-  { key: 'claro', label: 'Claro', scheme: 'light' },
-  { key: 'oscuro', label: 'Oscuro', scheme: 'dark' },
-  { key: 'sistema', label: 'Según el sistema', scheme: 'system' },
+const THEME_OPTIONS: { key: ThemeChoice; label: string }[] = [
+  { key: 'claro', label: 'Claro' },
+  { key: 'oscuro', label: 'Oscuro' },
+  { key: 'sistema', label: 'Según el sistema' },
 ];
 
 /** MOCK: en la Fase 4 saldrá del usuario autenticado de Firebase Auth (users/{uid}). */
@@ -99,12 +97,13 @@ function roleLabel(role: UserRole): string {
 }
 
 export default function ProfileScreen() {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   const { signOut, changePassword } = useSession();
+  const { choice: theme, setChoice } = useTheme();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
-  const [theme, setTheme] = useState<ThemeChoice>('claro');
   const [notice, setNotice] = useState<string | null>(null);
 
   const [currentPassword, setCurrentPassword] = useState('');
@@ -161,8 +160,7 @@ export default function ProfileScreen() {
   };
 
   const handleSelectTheme = (choice: (typeof THEME_OPTIONS)[number]) => {
-    setTheme(choice.key);
-    colorScheme.set(choice.scheme);
+    setChoice(choice.key);
     setThemeOpen(false);
   };
 
@@ -300,7 +298,7 @@ export default function ProfileScreen() {
           statusBarTranslucent
           onRequestClose={() => setConfirmOpen(false)}
         >
-          <View className="flex-1 items-center justify-center bg-udec-text/50 px-6">
+          <View className="flex-1 items-center justify-center bg-black/50 px-6">
             <Pressable
               accessible={false}
               className="absolute inset-0"
@@ -346,7 +344,7 @@ export default function ProfileScreen() {
           statusBarTranslucent
           onRequestClose={closePasswordModal}
         >
-          <View className="flex-1 items-center justify-center bg-udec-text/50 px-6">
+          <View className="flex-1 items-center justify-center bg-black/50 px-6">
             <Pressable accessible={false} className="absolute inset-0" onPress={closePasswordModal} />
             <View accessibilityViewIsModal className="w-full max-w-sm gap-4 rounded-card bg-udec-background p-5">
               <Text weight="bold" accessibilityRole="header" className="text-lg text-udec-text">
@@ -435,7 +433,7 @@ export default function ProfileScreen() {
           statusBarTranslucent
           onRequestClose={() => setThemeOpen(false)}
         >
-          <View className="flex-1 items-center justify-center bg-udec-text/50 px-6">
+          <View className="flex-1 items-center justify-center bg-black/50 px-6">
             <Pressable accessible={false} className="absolute inset-0" onPress={() => setThemeOpen(false)} />
             <View accessibilityViewIsModal className="w-full max-w-sm gap-2 rounded-card bg-udec-background p-5">
               <Text weight="bold" accessibilityRole="header" className="mb-2 text-lg text-udec-text">

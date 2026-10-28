@@ -4,7 +4,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '../../components/ui/text';
-import { colors, fonts } from '../../theme';
+import { fonts } from '../../theme';
+import { useThemeColors } from '@/theme/theme-context';
 
 type BoxState = 'default' | 'focus' | 'error';
 
@@ -28,6 +29,7 @@ async function sendPasswordResetLink(_email: string): Promise<void> {
 }
 
 export default function RecoverPasswordScreen() {
+  const colors = useThemeColors();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [email, setEmail] = useState('');

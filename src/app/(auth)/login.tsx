@@ -1,26 +1,43 @@
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, TextInput, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GoogleMark } from '../../components/google-mark';
 import { Text } from '../../components/ui/text';
+import { useSession } from '../../providers/demo-session-provider';
 import { colors, fonts } from '../../theme';
 
 type Field = 'email' | 'password';
 
+const DOMAIN_ERROR = 'Usa tu correo institucional @ucundinamarca.edu.co. Los correos personales no tienen acceso.';
+
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const { signIn } = useSession();
   const [email, setEmail] = useState('test@gmail.com');
   const [password, setPassword] = useState('test123');
   const [showPassword, setShowPassword] = useState(false);
   const [focused, setFocused] = useState<Field | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const canSubmit = email.trim().length > 0 && password.length > 0;
 
+  const submit = () => {
+    const ok = signIn(email, password);
+    setError(ok ? null : DOMAIN_ERROR);
+  };
+
   return (
-    <KeyboardAvoidingView className="flex-1 bg-udec-surface" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <View className="flex-1 w-full max-w-md self-center bg-udec-background">
+    <KeyboardAvoidingView
+      className="flex-1 bg-udec-surface"
+      style={{ alignItems: Platform.OS === 'web' ? 'center' : 'stretch' }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <View
+        className="flex-1 bg-udec-background"
+        style={{ width: '100%', maxWidth: Platform.OS === 'web' ? 448 : undefined }}
+      >
         <View className="bg-udec-primary overflow-hidden" style={{ paddingTop: insets.top }}>
           <View className="h-14 flex-row items-center justify-between px-4">
             <Pressable
@@ -105,16 +122,23 @@ export default function LoginScreen() {
                     style={{ fontFamily: fonts.medium }}
                   />
                 </View>
-                <View className="flex-row items-start gap-1.5 pt-0.5">
-                  <MaterialIcons name="info-outline" size={14} color={colors.secondary} style={{ marginTop: 1 }} />
-                  <Text className="flex-1 text-[11.5px] leading-4 text-udec-secondary">
-                    Usa tu correo institucional{' '}
-                    <Text weight="semibold" className="text-[11.5px] text-udec-secondary">
-                      @ucundinamarca.edu.co
+                {error ? (
+                  <View accessibilityRole="alert" className="flex-row items-start gap-1.5 pt-0.5">
+                    <MaterialIcons name="error-outline" size={14} color={colors.red} style={{ marginTop: 1 }} />
+                    <Text className="flex-1 text-[11.5px] leading-4 text-udec-red">{error}</Text>
+                  </View>
+                ) : (
+                  <View className="flex-row items-start gap-1.5 pt-0.5">
+                    <MaterialIcons name="info-outline" size={14} color={colors.secondary} style={{ marginTop: 1 }} />
+                    <Text className="flex-1 text-[11.5px] leading-4 text-udec-secondary">
+                      Usa tu correo institucional{' '}
+                      <Text weight="semibold" className="text-[11.5px] text-udec-secondary">
+                        @ucundinamarca.edu.co
+                      </Text>
+                      . Los correos personales no tienen acceso.
                     </Text>
-                    . Los correos personales no tienen acceso.
-                  </Text>
-                </View>
+                  </View>
+                )}
               </View>
 
               <View className="gap-1.5">
@@ -158,6 +182,7 @@ export default function LoginScreen() {
                   accessibilityRole="button"
                   accessibilityState={{ disabled: !canSubmit }}
                   disabled={!canSubmit}
+                  onPress={submit}
                   className={`h-12 flex-row items-center justify-center gap-2 rounded-control bg-udec-primary shadow-sm active:bg-udec-primary-hover ${
                     canSubmit ? '' : 'opacity-50'
                   }`}
@@ -176,6 +201,7 @@ export default function LoginScreen() {
                   <View className="h-px flex-1 bg-udec-border" />
                 </View>
 
+                {/* TODO(fase 4): Google sign-in con validación de dominio institucional. */}
                 <Pressable
                   accessibilityRole="button"
                   className="h-12 flex-row items-center justify-center gap-3 rounded-control border border-udec-border bg-udec-background active:bg-udec-surface"
@@ -188,12 +214,20 @@ export default function LoginScreen() {
               </View>
 
               <View className="flex-row items-center justify-between pt-1">
-                <Pressable accessibilityRole="link" className="min-h-[44px] justify-center">
+                <Pressable
+                  accessibilityRole="link"
+                  onPress={() => router.push('/recuperar' as Href)}
+                  className="min-h-[44px] justify-center"
+                >
                   <Text weight="semibold" className="text-xs text-udec-primary">
                     ¿Olvidaste tu contraseña?
                   </Text>
                 </Pressable>
-                <Pressable accessibilityRole="link" className="min-h-[44px] justify-center">
+                <Pressable
+                  accessibilityRole="link"
+                  onPress={() => router.push('/registro' as Href)}
+                  className="min-h-[44px] justify-center"
+                >
                   <Text weight="semibold" className="text-xs text-udec-primary">
                     Crear cuenta
                   </Text>

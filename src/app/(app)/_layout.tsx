@@ -1,0 +1,13 @@
+import { Stack } from 'expo-router';
+
+export default function AppLayout() {
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="chat/[id]" />
+      <Stack.Screen name="foro/[id]" />
+      <Stack.Screen name="foro/nueva" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="bienvenida" />
+    </Stack>
+  );
+}

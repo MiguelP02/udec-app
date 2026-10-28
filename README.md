@@ -11,15 +11,13 @@ Busca reemplazar el uso de WhatsApp para lo académico y funcionar también como
 3. **Foro técnico de programación:** preguntas con código resaltado, votos, respuestas y marcar una respuesta como solución.
 4. **Acceso institucional:** solo cuentas `@ucundinamarca.edu.co`, con verificación por correo, y perfil del estudiante con cambio de contraseña y tema claro u oscuro.
 
-## Estado del proyecto
+## Estado del prototipo
 
-El proyecto se migró de Flutter a **React Native con Expo**. La versión actual es un prototipo navegable con datos de ejemplo:
+Versión navegable con datos de ejemplo:
 
-- Todas las pantallas están implementadas: login, registro, recuperar contraseña, verificar correo, chats, detalle del chat, archivos, comunidad, foro (lista, detalle y nueva pregunta), perfil y bienvenida.
-- Los datos viven en `src/data/` y son de ejemplo. La sesión de demostración es **solo para la presentación**.
-- **Pendiente:** conectar Firebase Authentication y Firestore (fase 4), adjuntos con Cloudinary (fase 5) y los datos reales de comunidad, foro y perfil (fases 6 a 8).
-
-El código Flutter original se conserva como referencia en `reference/flutter/`.
+- Pantallas implementadas: login, registro, recuperar contraseña, verificar correo, chats, detalle del chat, archivos, comunidad, foro (lista, detalle y nueva pregunta), perfil y bienvenida.
+- Los datos viven en `src/data/` y son de ejemplo. La sesión de demostración es solo para la presentación.
+- Pendiente: conectar Firebase Authentication y Firestore, adjuntos con Cloudinary y los datos reales de comunidad, foro y perfil.
 
 ## Cómo ejecutarlo
 
@@ -72,13 +70,8 @@ src/
   theme/        Paletas claro y oscuro, tokens, tipografía y contexto del tema
   types/        Tipos de dominio
   utils/        Fechas, iniciales, archivos, resaltado de código y correos
-docs/           Plan de migración, especificaciones de UI y guías
-design/         Diseño de referencia exportado desde Google Stitch
-reference/      Código Flutter original (solo referencia)
 scripts/        Utilidades de desarrollo
 ```
-
-Las pantallas siguen las especificaciones de `docs/ui/`. El plan completo de la migración está en `docs/PLAN_MIGRACION_RN.md` y el avance por fase en `docs/PROGRESO.md`.
 
 ## Autores
 
